@@ -1,0 +1,79 @@
+@import "tailwindcss";
+
+:root {
+  --background: #FAF7F2;
+  --foreground: #2B2421;
+  --card-background: #ffffff;
+  --border-color: #EADEC9;
+}
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-brand-cream: #FAF7F2;
+  --color-brand-espresso: #2B2421;
+  --color-brand-rose: #B95C65;
+  --color-brand-rose-hover: #A34A52;
+  --color-brand-gold: #D4AF37;
+  --color-brand-whatsapp: #25D366;
+  --color-brand-whatsapp-hover: #20BA56;
+  --color-brand-border: #EADEC9;
+  
+  --font-serif: var(--font-playfair), Georgia, serif;
+  --font-sans: var(--font-inter), sans-serif;
+  
+  --animate-slide-up: slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-fade-in: fade-in 0.3s ease-out;
+  --animate-drawer-in: drawer-in 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slide-up {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes drawer-in {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom scrollbar for premium aesthetics */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #FAF7F2;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D5CBB6;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #B95C65;
+}
+
+/* Custom styles for category scroll snaps and cards */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
