@@ -24,7 +24,7 @@ export default function ProductCard({ product, onOpenModal, onAddToCart }) {
   };
 
   return (
-    <div className="bg-white rounded-2xl overflow-hidden border border-brand-border/60 hover:border-brand-rose/25 transition-all duration-300 hover:shadow-lg flex flex-col justify-between group relative">
+    <div className="bg-brand-card rounded-2xl overflow-hidden border border-brand-border/60 hover:border-brand-rose/25 transition-all duration-300 hover:shadow-lg flex flex-col justify-between group relative">
       {/* Top Badges and Action Icons */}
       <div className="absolute top-3 left-3 right-3 z-10 flex items-center justify-between pointer-events-none">
         <div className="flex flex-col gap-1.5 items-start">
@@ -45,7 +45,7 @@ export default function ProductCard({ product, onOpenModal, onAddToCart }) {
           {/* Info trigger */}
           <button
             onClick={() => onOpenModal(product)}
-            className="p-1.5 bg-white/90 backdrop-blur hover:bg-brand-rose hover:text-brand-cream text-brand-espresso rounded-full shadow-md transition-all active:scale-90"
+            className="p-1.5 bg-brand-card/90 backdrop-blur hover:bg-brand-rose hover:text-brand-cream text-brand-espresso rounded-full shadow-md transition-all active:scale-90"
             title="View benefits & info"
           >
             <Info className="w-4 h-4" />
@@ -56,7 +56,7 @@ export default function ProductCard({ product, onOpenModal, onAddToCart }) {
       {/* Product Image section */}
       <div 
         onClick={() => onOpenModal(product)}
-        className="w-full aspect-square bg-[#FAF7F2]/40 relative overflow-hidden flex items-center justify-center p-6 border-b border-brand-border/30 cursor-pointer"
+        className="w-full aspect-square bg-brand-cream/40 relative overflow-hidden flex items-center justify-center p-6 border-b border-brand-border/30 cursor-pointer"
       >
         <div className="relative w-full h-full transition-transform duration-500 group-hover:scale-105">
           <Image

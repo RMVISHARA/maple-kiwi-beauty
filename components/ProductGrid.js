@@ -203,7 +203,7 @@ export default function ProductGrid({ searchQuery }) {
             id="sort"
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="bg-[#FAF7F2] border border-brand-border text-xs font-bold text-brand-espresso rounded-full py-1.5 px-4 focus:outline-none focus:ring-1 focus:ring-brand-rose focus:border-brand-rose cursor-pointer transition-colors"
+            className="bg-brand-cream border border-brand-border text-xs font-bold text-brand-espresso rounded-full py-1.5 px-4 focus:outline-none focus:ring-1 focus:ring-brand-rose focus:border-brand-rose cursor-pointer transition-colors"
           >
             <option>Featured</option>
             <option>Price: Low to High</option>
@@ -223,7 +223,7 @@ export default function ProductGrid({ searchQuery }) {
               className={`text-xs font-semibold py-2 px-5 rounded-full border transition-all duration-300 ${
                 selectedCategory === category
                   ? "bg-brand-espresso text-brand-cream border-brand-espresso shadow-sm"
-                  : "bg-white text-brand-espresso/75 border-brand-border/60 hover:border-brand-rose/25 hover:text-brand-rose"
+                  : "bg-brand-card text-brand-espresso/75 border-brand-border/60 hover:border-brand-rose/25 hover:text-brand-rose"
               }`}
             >
               {category}
@@ -245,7 +245,7 @@ export default function ProductGrid({ searchQuery }) {
           ))}
         </div>
       ) : (
-        <div className="w-full text-center py-20 bg-white rounded-2xl border border-brand-border/40 p-8">
+        <div className="w-full text-center py-20 bg-brand-card rounded-2xl border border-brand-border/40 p-8">
           <p className="text-base font-semibold text-brand-espresso/60 mb-2">
             No products found matching "{searchQuery}"
           </p>

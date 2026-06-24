@@ -17,7 +17,7 @@ export default function ProductModal({ product, onClose, onAddToCart }) {
 
   return (
     <div className="fixed inset-0 bg-brand-espresso/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 md:p-6 overflow-y-auto animate-fade-in">
-      <div className="bg-[#FAF7F2] text-brand-espresso max-w-3xl w-full rounded-2xl overflow-hidden border border-brand-border shadow-2xl relative flex flex-col md:flex-row animate-slide-up max-h-[90vh] md:max-h-[85vh]">
+      <div className="bg-brand-cream text-brand-espresso max-w-3xl w-full rounded-2xl overflow-hidden border border-brand-border shadow-2xl relative flex flex-col md:flex-row animate-slide-up max-h-[90vh] md:max-h-[85vh]">
         {/* Close Button */}
         <button 
           onClick={onClose}
@@ -28,7 +28,7 @@ export default function ProductModal({ product, onClose, onAddToCart }) {
         </button>
 
         {/* Left Side: Product Image & Origin badge */}
-        <div className="w-full md:w-1/2 bg-white relative p-8 flex items-center justify-center min-h-[300px] md:min-h-full border-b md:border-b-0 md:border-r border-brand-border">
+        <div className="w-full md:w-1/2 bg-brand-card relative p-8 flex items-center justify-center min-h-[300px] md:min-h-full border-b md:border-b-0 md:border-r border-brand-border">
           {/* Sale/Discount Badge */}
           {product.discountPercent && (
             <span className="absolute top-4 left-4 bg-brand-rose text-brand-cream text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full shadow-sm">

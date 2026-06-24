@@ -101,7 +101,7 @@ export default function Collections() {
       {/* New Zealand Coming Soon Dialog Drawer */}
       {showNzComingSoon && (
         <div className="fixed inset-0 bg-brand-espresso/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
-          <div className="bg-[#FAF7F2] text-brand-espresso max-w-md w-full rounded-2xl p-6 relative border border-brand-border shadow-2xl animate-slide-up">
+          <div className="bg-brand-cream text-brand-espresso max-w-md w-full rounded-2xl p-6 relative border border-brand-border shadow-2xl animate-slide-up">
             <button 
               onClick={() => setShowNzComingSoon(false)}
               className="absolute right-4 top-4 p-1 rounded-full hover:bg-brand-espresso/5 transition-colors"

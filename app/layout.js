@@ -1,5 +1,8 @@
 import { Inter, Playfair_Display } from "next/font/google";
 import { CartProvider } from "@/context/CartContext";
+import { AuthProvider } from "@/context/AuthContext";
+import { ThemeProvider } from "@/context/ThemeContext";
+import AuthModal from "@/components/AuthModal";
 import "./globals.css";
 
 const inter = Inter({
@@ -32,10 +35,15 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${inter.variable} ${playfair.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-brand-cream text-brand-espresso font-sans">
-        <CartProvider>
-          {children}
-        </CartProvider>
+      <body className="min-h-full flex flex-col bg-brand-cream text-brand-espresso font-sans transition-colors duration-300">
+        <ThemeProvider>
+          <AuthProvider>
+            <CartProvider>
+              {children}
+              <AuthModal />
+            </CartProvider>
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -77,7 +77,7 @@ export default function CartDrawer() {
       {/* Sliding Drawer Container */}
       <div
         ref={drawerRef}
-        className="w-full max-w-md bg-[#FAF7F2] h-full flex flex-col justify-between shadow-2xl animate-drawer-in border-l border-brand-border"
+        className="w-full max-w-md bg-brand-cream h-full flex flex-col justify-between shadow-2xl animate-drawer-in border-l border-brand-border"
       >
         {/* Drawer Header */}
         <div className="p-5 border-b border-brand-border flex items-center justify-between">
@@ -101,7 +101,7 @@ export default function CartDrawer() {
 
         {/* Free Shipping Tracker */}
         {itemCount > 0 && (
-          <div className="bg-white border-b border-brand-border/60 p-5">
+          <div className="bg-brand-card border-b border-brand-border/60 p-5">
             <div className="text-xs mb-2">
               {isFreeShipping ? (
                 <p className="font-semibold text-[#4B6F44] flex items-center gap-1">
@@ -115,7 +115,7 @@ export default function CartDrawer() {
             </div>
             
             {/* Progress Bar */}
-            <div className="w-full bg-[#FAF7F2] rounded-full h-2 overflow-hidden border border-brand-border/40">
+            <div className="w-full bg-brand-cream rounded-full h-2 overflow-hidden border border-brand-border/40">
               <div
                 className={`h-full transition-all duration-500 rounded-full ${
                   isFreeShipping ? "bg-[#4B6F44]" : "bg-brand-rose"
@@ -132,10 +132,10 @@ export default function CartDrawer() {
             cart.map((item) => (
               <div
                 key={item.id}
-                className="flex items-center gap-4 bg-white rounded-xl p-3 border border-brand-border/30 hover:border-brand-border/60 transition-colors shadow-sm"
+                className="flex items-center gap-4 bg-brand-card rounded-xl p-3 border border-brand-border/30 hover:border-brand-border/60 transition-colors shadow-sm"
               >
                 {/* Item Image */}
-                <div className="w-16 h-16 bg-[#FAF7F2] rounded-lg relative overflow-hidden flex-shrink-0 flex items-center justify-center border border-brand-border/20">
+                <div className="w-16 h-16 bg-brand-cream rounded-lg relative overflow-hidden flex-shrink-0 flex items-center justify-center border border-brand-border/20">
                   <Image
                     src={item.image}
                     alt={item.name}
@@ -159,7 +159,7 @@ export default function CartDrawer() {
 
                   {/* Quantity Controls */}
                   <div className="flex items-center gap-3 mt-2">
-                    <div className="flex items-center border border-brand-border/80 rounded-full bg-[#FAF7F2]">
+                    <div className="flex items-center border border-brand-border/80 rounded-full bg-brand-cream">
                       <button
                         onClick={() => updateQuantity(item.id, item.quantity - 1)}
                         className="p-1 hover:text-brand-rose transition-colors"
@@ -212,7 +212,7 @@ export default function CartDrawer() {
 
         {/* Drawer Footer (Only visible if items exist) */}
         {cart.length > 0 && (
-          <div className="p-5 bg-white border-t border-brand-border shadow-[0_-4px_24px_rgba(0,0,0,0.04)]">
+          <div className="p-5 bg-brand-card border-t border-brand-border shadow-[0_-4px_24px_rgba(0,0,0,0.04)]">
             <div className="space-y-2 mb-4">
               <div className="flex justify-between text-xs text-brand-espresso/70">
                 <span>Subtotal</span>

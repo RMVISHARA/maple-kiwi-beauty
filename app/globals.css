@@ -3,21 +3,42 @@
 :root {
   --background: #FAF7F2;
   --foreground: #2B2421;
-  --card-background: #ffffff;
-  --border-color: #EADEC9;
+  
+  --brand-cream: #FAF7F2;
+  --brand-espresso: #2B2421;
+  --brand-rose: #B95C65;
+  --brand-rose-hover: #A34A52;
+  --brand-gold: #D4AF37;
+  --brand-border: #EADEC9;
+  --brand-card: #ffffff;
+}
+
+:root.dark,
+html.dark,
+body.dark {
+  --background: #15110F; /* Premium Warm Dark Espresso Base */
+  --foreground: #FAF7F2; /* Cream text */
+  
+  --brand-cream: #1C1613; /* Swapped: dark warm background container */
+  --brand-espresso: #FAF7F2; /* Swapped: light cream text */
+  --brand-rose: #D37580; /* Premium dust rose adjusted for dark mode readability */
+  --brand-rose-hover: #C55E69;
+  --brand-border: #3A2F2B; /* Dark warm subtle border */
+  --brand-card: #231B19; /* Lighter warm dark container card */
 }
 
 @theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-brand-cream: #FAF7F2;
-  --color-brand-espresso: #2B2421;
-  --color-brand-rose: #B95C65;
-  --color-brand-rose-hover: #A34A52;
-  --color-brand-gold: #D4AF37;
+  --color-brand-cream: var(--brand-cream);
+  --color-brand-espresso: var(--brand-espresso);
+  --color-brand-rose: var(--brand-rose);
+  --color-brand-rose-hover: var(--brand-rose-hover);
+  --color-brand-gold: var(--brand-gold);
+  --color-brand-border: var(--brand-border);
+  --color-brand-card: var(--brand-card);
   --color-brand-whatsapp: #25D366;
   --color-brand-whatsapp-hover: #20BA56;
-  --color-brand-border: #EADEC9;
   
   --font-serif: var(--font-playfair), Georgia, serif;
   --font-sans: var(--font-inter), sans-serif;
@@ -26,6 +47,8 @@
   --animate-fade-in: fade-in 0.3s ease-out;
   --animate-drawer-in: drawer-in 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+@variant dark (&:where(.dark, .dark *));
 
 @keyframes slide-up {
   from { transform: translateY(20px); opacity: 0; }
@@ -48,6 +71,9 @@ body {
   font-family: var(--font-sans);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
 }
 
 /* Custom scrollbar for premium aesthetics */
@@ -57,16 +83,16 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #FAF7F2;
+  background: var(--brand-cream);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #D5CBB6;
+  background: var(--brand-border);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #B95C65;
+  background: var(--brand-rose);
 }
 
 /* Custom styles for category scroll snaps and cards */
