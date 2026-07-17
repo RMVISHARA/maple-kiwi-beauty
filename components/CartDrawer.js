@@ -40,15 +40,17 @@ export default function CartDrawer() {
   const [quoteLoading, setQuoteLoading] = useState(false);
   const [checkoutError, setCheckoutError] = useState("");
 
-  const isFreeShipping = false;
+  const isFreeShipping = FREE_SHIPPING_LIMIT !== null && subtotal >= FREE_SHIPPING_LIMIT;
+  const amountUntilFree = Math.max(0, (FREE_SHIPPING_LIMIT || 0) - subtotal);
+  const progressPercent = FREE_SHIPPING_LIMIT ? Math.min((subtotal / FREE_SHIPPING_LIMIT) * 100, 100) : 0;
 
-  const shippingAmount = shippingQuote?.shipping ?? null;
+  const shippingAmount = isFreeShipping ? 0 : (shippingQuote?.shipping ?? null);
   const estimatedTotal =
     shippingAmount !== null ? subtotal + shippingAmount : subtotal;
 
   const fetchShippingQuote = useCallback(async () => {
-    if (!district) {
-      setShippingQuote(null);
+    if (!district || isFreeShipping) {
+      setShippingQuote(isFreeShipping ? { shipping: 0, isFreeShipping: true, zoneLabel: "Free delivery" } : null);
       return;
     }
 
@@ -146,7 +148,9 @@ export default function CartDrawer() {
       itemsText += `${index + 1}. ${item.name}${sizeLabel} (${item.brand}) - Qty: ${item.quantity} x LKR ${item.price.toLocaleString()} = LKR ${(item.price * item.quantity).toLocaleString()}\n`;
     });
 
-    const shippingLabel = `LKR ${shippingAmount.toLocaleString()} (${shippingQuote?.zoneLabel || district})`;
+    const shippingLabel = isFreeShipping
+      ? `FREE (Orders over LKR ${FREE_SHIPPING_LIMIT.toLocaleString()})`
+      : `LKR ${shippingAmount.toLocaleString()} (${shippingQuote?.zoneLabel || district})`;
 
     const deliveryAddress = `${addressLine.trim()}, ${city.trim()}, ${district}`;
 
@@ -231,7 +235,32 @@ export default function CartDrawer() {
           </button>
         </div>
 
-
+        {/* Free Shipping Tracker */}
+        {itemCount > 0 && (
+          <div className="bg-brand-card border-b border-brand-border/60 p-4 text-center shrink-0">
+            {isFreeShipping ? (
+              <p className="text-xs font-semibold text-[#4B6F44]">
+                🎉 You qualify for <span className="underline">FREE shipping</span> on this order!
+              </p>
+            ) : (
+              <>
+                <p className="text-xs font-semibold text-brand-espresso/80 mb-2">
+                  Add{" "}
+                  <span className="font-bold text-brand-rose">
+                    Rs. {amountUntilFree.toLocaleString()}
+                  </span>{" "}
+                  more to your cart to qualify for free shipping.
+                </p>
+                <div className="w-full h-1.5 bg-brand-border/40 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-brand-rose rounded-full transition-all duration-500"
+                    style={{ width: `${progressPercent}%` }}
+                  />
+                </div>
+              </>
+            )}
+          </div>
+        )}
 
         {/* Cart items + delivery form */}
         <div className="flex-grow overflow-y-auto p-5 space-y-4">
@@ -442,8 +471,8 @@ export default function CartDrawer() {
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </button>
 
-            <p className="text-[10px] text-center text-brand-espresso/45 mt-3 leading-relaxed">
-              Delivery from Rs. 350 based on your district.
+            <p className="text-[10px] text-center text-[#2B2421]/60 mt-3 leading-relaxed">
+              Delivery from Rs. 350 based on your district. Free shipping on orders over Rs. {FREE_SHIPPING_LIMIT.toLocaleString()}.
             </p>
           </div>
         )}

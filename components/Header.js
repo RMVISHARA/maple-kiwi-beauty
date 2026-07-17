@@ -45,7 +45,7 @@ export default function Header({ searchQuery, setSearchQuery }) {
   };
 
   const announcements = [
-    "🚚 Delivery from Rs. 350 based on district",
+    "🚚 Free Shipping Island-wide over Rs. 15,000.",
     "🍁 Authentic Canada & NZ imports",
     "📦 Delivered Island-wide"
   ];
@@ -95,7 +95,7 @@ export default function Header({ searchQuery, setSearchQuery }) {
         {/* Desktop Announcement View */}
         <div className="hidden md:flex justify-center items-center gap-12 max-w-7xl mx-auto font-medium">
           <div className="flex items-center gap-1.5">
-            <span>🚚</span> Delivery from Rs. 350 based on district
+            <span>🚚</span> Free Shipping Island-wide over Rs. 15,000.
           </div>
           <div className="flex items-center gap-1.5">
             <span>🍁</span> Authentic Canada & NZ imports
