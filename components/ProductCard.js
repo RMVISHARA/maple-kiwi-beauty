@@ -2,36 +2,45 @@
 
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Star, Info, ShoppingBag } from "lucide-react";
+import { getOriginEmoji } from "@/lib/origins";
+import { formatMeasurementLabel } from "@/lib/measurement";
+import { hasVariants, getPriceFrom, buildVariantOptions } from "@/lib/variants";
+
+import ProductBadge from "./ProductBadge";
+
+export function getProductSlug(name) {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)+/g, "");
+}
 
 export default function ProductCard({ product, onOpenModal, onAddToCart }) {
-  // Color configuration for specific badges
-  const getBadgeStyles = (badge) => {
-    switch (badge?.toUpperCase()) {
-      case "BESTSELLER":
-        return "bg-brand-espresso text-brand-cream";
-      case "SALE":
-        return "bg-brand-rose text-brand-cream";
-      case "TOP RATED":
-        return "bg-[#8A9A86] text-white"; // soft sage green
-      case "CLIMATE PICK":
-        return "bg-[#4B6F44] text-white"; // forest green
-      case "ESSENTIAL":
-        return "bg-[#8FBC8F] text-brand-espresso"; // light sea green
-      default:
-        return "bg-brand-espresso text-brand-cream";
-    }
-  };
+  const multiVariant = hasVariants(product);
+  const optionCount = multiVariant ? buildVariantOptions(product).length : 1;
+  // With variants, "out of stock" only when every option is out of stock.
+  const outOfStock = multiVariant
+    ? buildVariantOptions(product).every((o) => !o.inStock)
+    : product.inStock === false;
+  const showStockCount = !multiVariant && product.showStock && product.stockQuantity != null && !outOfStock;
+  const lowStock = showStockCount && product.stockQuantity <= 10;
+  const measurementLabel = formatMeasurementLabel(product);
+  const priceFrom = multiVariant ? getPriceFrom(product) : product.price;
 
   return (
     <div className="bg-brand-card rounded-2xl overflow-hidden border border-brand-border/60 hover:border-brand-rose/25 transition-all duration-300 hover:shadow-lg flex flex-col justify-between group relative">
       {/* Top Badges and Action Icons */}
       <div className="absolute top-3 left-3 right-3 z-10 flex items-center justify-between pointer-events-none">
         <div className="flex flex-col gap-1.5 items-start">
-          {product.badge && (
-            <span className={`text-[9px] font-extrabold tracking-widest uppercase px-2.5 py-1 rounded-full shadow-sm ${getBadgeStyles(product.badge)}`}>
-              {product.badge}
+          {outOfStock && (
+            <span className="text-[9px] font-extrabold tracking-widest uppercase px-2.5 py-1 rounded-full shadow-sm bg-brand-espresso text-brand-cream">
+              Out of Stock
             </span>
+          )}
+          {product.badge && !outOfStock && (
+            <ProductBadge text={product.badge} color={product.badgeColor} />
           )}
         </div>
         
@@ -54,9 +63,9 @@ export default function ProductCard({ product, onOpenModal, onAddToCart }) {
       </div>
 
       {/* Product Image section */}
-      <div 
-        onClick={() => onOpenModal(product)}
-        className="w-full aspect-square bg-brand-cream/40 relative overflow-hidden flex items-center justify-center p-6 border-b border-brand-border/30 cursor-pointer"
+      <Link 
+        href={`/products/${product.id}-${getProductSlug(product.name)}`}
+        className="w-full aspect-square bg-brand-cream/40 relative overflow-hidden flex items-center justify-center p-6 border-b border-brand-border/30 cursor-pointer block"
       >
         <div className="relative w-full h-full transition-transform duration-500 group-hover:scale-105">
           <Image
@@ -67,7 +76,7 @@ export default function ProductCard({ product, onOpenModal, onAddToCart }) {
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 33vw, 250px"
           />
         </div>
-      </div>
+      </Link>
 
       {/* Product Info Section */}
       <div className="p-4 flex-grow flex flex-col justify-between">
@@ -78,22 +87,44 @@ export default function ProductCard({ product, onOpenModal, onAddToCart }) {
               {product.brand}
             </span>
             <div className="bg-brand-rose/5 border border-brand-rose/10 text-brand-rose rounded-full px-2 py-0.5 flex items-center gap-1 text-[9px] font-bold">
-              <span>🍁</span> {product.origin}
+              <span>{getOriginEmoji(product.origin)}</span> {product.origin}
             </div>
           </div>
 
           {/* Title */}
-          <h4 
-            onClick={() => onOpenModal(product)}
-            className="font-serif font-bold text-sm md:text-base text-brand-espresso hover:text-brand-rose cursor-pointer transition-colors leading-snug mb-1 line-clamp-1"
-          >
-            {product.name}
+          <h4 className="leading-snug mb-1 line-clamp-1">
+            <Link 
+              href={`/products/${product.id}-${getProductSlug(product.name)}`}
+              className="font-serif font-bold text-sm md:text-base text-brand-espresso hover:text-brand-rose transition-colors"
+            >
+              {product.name}
+            </Link>
           </h4>
 
           {/* Subtitle / Focus description */}
-          <p className="text-[11px] text-brand-espresso/50 leading-relaxed mb-3 line-clamp-2 min-h-[32px]">
+          <p className="text-[11px] text-brand-espresso/50 leading-relaxed mb-2 line-clamp-2 min-h-[32px]">
             {product.subtitle}
           </p>
+
+          {/* Size / measurement */}
+          {multiVariant ? (
+            <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 mb-2 rounded-full bg-brand-rose/10 border border-brand-rose/20 text-brand-rose">
+              {optionCount} sizes available
+            </span>
+          ) : (
+            measurementLabel && (
+              <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 mb-2 rounded-full bg-brand-espresso/5 border border-brand-border/60 text-brand-espresso/70">
+                {measurementLabel}
+              </span>
+            )
+          )}
+
+          {/* Remaining stock (only if admin enabled showing it) */}
+          {showStockCount && (
+            <p className={`text-[10px] font-bold mb-2 ${lowStock ? "text-brand-rose" : "text-brand-espresso/55"}`}>
+              {lowStock ? `Only ${product.stockQuantity} left in stock` : `${product.stockQuantity} in stock`}
+            </p>
+          )}
         </div>
 
         <div>
@@ -112,11 +143,16 @@ export default function ProductCard({ product, onOpenModal, onAddToCart }) {
           {/* Pricing & Add to Cart button */}
           <div className="flex items-center justify-between gap-2 pt-2 border-t border-brand-border/40">
             <div>
+              {multiVariant && (
+                <span className="block text-[9px] font-bold uppercase tracking-wide text-brand-espresso/45 leading-none mb-0.5">
+                  From
+                </span>
+              )}
               <div className="flex items-baseline gap-1.5">
                 <span className="text-sm md:text-base font-bold text-brand-rose">
-                  LKR {product.price.toLocaleString()}
+                  LKR {priceFrom.toLocaleString()}
                 </span>
-                {product.originalPrice && (
+                {!multiVariant && product.originalPrice && (
                   <span className="text-[10px] text-brand-espresso/45 line-through">
                     {product.originalPrice.toLocaleString()}
                   </span>
@@ -125,9 +161,19 @@ export default function ProductCard({ product, onOpenModal, onAddToCart }) {
             </div>
 
             <button
-              onClick={() => onAddToCart(product)}
-              className="bg-brand-espresso hover:bg-brand-rose text-brand-cream p-2 rounded-full transition-all duration-300 shadow hover:shadow-md active:scale-95 flex items-center justify-center shrink-0"
-              title="Add to cart"
+              onClick={() => {
+                if (outOfStock) return;
+                // With multiple options the customer must pick a size first.
+                if (multiVariant) onOpenModal(product);
+                else onAddToCart(product);
+              }}
+              disabled={outOfStock}
+              className={`p-2 rounded-full transition-all duration-300 shadow flex items-center justify-center shrink-0 ${
+                outOfStock
+                  ? "bg-brand-espresso/20 text-brand-cream/70 cursor-not-allowed"
+                  : "bg-brand-espresso hover:bg-brand-rose text-brand-cream hover:shadow-md active:scale-95"
+              }`}
+              title={outOfStock ? "Out of stock" : multiVariant ? "Choose a size" : "Add to cart"}
             >
               <ShoppingBag className="w-4 h-4" />
             </button>

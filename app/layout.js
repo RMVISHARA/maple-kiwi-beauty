@@ -18,9 +18,13 @@ const playfair = Playfair_Display({
 });
 
 export const metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://maplekiwibeauty.lk"),
   title: "Maple & Kiwi Beauty | Premium Skincare from Canada & New Zealand",
   description:
     "Maple & Kiwi Beauty brings high quality skincare, beauty, and wellness products from Canada and New Zealand directly to Sri Lanka. Authentic, trusted, and effective beauty solutions.",
+  alternates: {
+    canonical: "/",
+  },
 };
 
 export const viewport = {

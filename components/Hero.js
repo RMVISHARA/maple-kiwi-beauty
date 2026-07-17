@@ -1,7 +1,8 @@
 "use client";
 
 import React from "react";
-import { ArrowRight, MessageSquareCode } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import HeroReviewCarousel from "@/components/HeroReviewCarousel";
 
 export default function Hero() {
   const handleScrollToProducts = (e) => {
@@ -20,7 +21,7 @@ export default function Hero() {
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
 
   return (
-    <section className="relative w-full h-[600px] md:h-[650px] flex items-center justify-start overflow-hidden bg-brand-espresso">
+    <section className="relative w-full h-[600px] md:h-[650px] flex items-center justify-start overflow-hidden bg-[#2B2421] dark:bg-[#1C1613]">
       {/* Background Image with Dark Tint Overlay */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-10000 hover:scale-105"
@@ -34,26 +35,27 @@ export default function Hero() {
       <div className="absolute bottom-1/4 left-1/3 w-64 h-64 bg-brand-gold/5 rounded-full blur-3xl pointer-events-none" />
 
       {/* Hero Content Container */}
-      <div className="relative max-w-7xl mx-auto w-full px-4 md:px-6 z-10 text-brand-cream animate-slide-up">
-        <div className="max-w-2xl text-left">
+      <div className="relative max-w-7xl mx-auto w-full px-4 md:px-6 z-10 text-[#FAF7F2] animate-slide-up">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-10 lg:gap-10 xl:gap-12">
+        <div className="max-w-2xl lg:max-w-xl xl:max-w-2xl text-left shrink-0">
           {/* Subtitle Accent Line */}
           <div className="flex items-center gap-3 mb-4">
             <span className="text-[10px] md:text-xs font-bold uppercase tracking-[0.25em] text-brand-rose">
               Premium Beauty Essentials
             </span>
             <div className="w-12 h-[1px] bg-brand-rose" />
-            <span className="text-[10px] md:text-xs font-semibold text-brand-cream/75">
+            <span className="text-[10px] md:text-xs font-semibold text-[#FAF7F2]/75">
               Canada · New Zealand
             </span>
           </div>
 
           {/* Heading */}
-          <h1 className="font-serif font-medium text-5xl md:text-7xl mb-6 tracking-tight leading-none">
+          <h1 className="font-serif font-medium text-5xl md:text-7xl mb-6 tracking-tight leading-none text-white">
             Natural. Pure. <span className="text-brand-rose italic font-light">You.</span>
           </h1>
 
           {/* Description */}
-          <p className="text-sm md:text-base text-brand-cream/80 leading-relaxed mb-8 max-w-xl">
+          <p className="text-sm md:text-base text-[#FAF7F2]/80 leading-relaxed mb-8 max-w-xl">
             Maple & Kiwi Beauty brings high quality skincare, beauty, and wellness products from Canada and New Zealand directly to Sri Lanka. Our mission is to provide authentic, trusted, and effective beauty solutions that help you look and feel your best.
           </p>
 
@@ -62,7 +64,7 @@ export default function Hero() {
             <a
               href="#all-products"
               onClick={handleScrollToProducts}
-              className="bg-brand-rose hover:bg-brand-rose-hover text-brand-cream font-semibold text-sm py-3.5 px-6 rounded-full inline-flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-brand-rose/25 active:scale-95 group"
+              className="bg-brand-rose hover:bg-brand-rose-hover text-[#FAF7F2] font-semibold text-sm py-3.5 px-6 rounded-full inline-flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-brand-rose/25 active:scale-95 group"
             >
               Shop 5 Essentials
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -83,7 +85,7 @@ export default function Hero() {
           </div>
 
           {/* Quick Trust Items */}
-          <div className="flex flex-wrap items-center gap-y-3 gap-x-6 text-xs text-brand-cream/70 font-semibold border-t border-brand-cream/10 pt-6">
+          <div className="flex flex-wrap items-center gap-y-3 gap-x-6 text-xs text-[#FAF7F2]/70 font-semibold border-t border-[#FAF7F2]/10 pt-6">
             <span className="inline-flex items-center gap-1.5">
               🍁 Canada Authentic
             </span>
@@ -94,6 +96,11 @@ export default function Hero() {
               📦 Islandwide Delivery
             </span>
           </div>
+        </div>
+
+        <div className="hidden lg:flex flex-1 items-center justify-end min-w-0 pl-4">
+          <HeroReviewCarousel />
+        </div>
         </div>
       </div>
     </section>

@@ -1,8 +1,10 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { X, Check, Star, ShoppingBag, Globe, SunMoon } from "lucide-react";
+import ProductBadge from "./ProductBadge";
+import { buildVariantOptions, getDefaultOption } from "@/lib/variants";
 
 export default function ProductModal({ product, onClose, onAddToCart }) {
   // Prevent background scrolling when modal is open
@@ -13,7 +15,22 @@ export default function ProductModal({ product, onClose, onAddToCart }) {
     };
   }, []);
 
+  const options = product ? buildVariantOptions(product) : [];
+  const hasChoices = options.length > 1;
+  const [selectedKey, setSelectedKey] = useState(() => (product ? getDefaultOption(product)?.key || "base" : "base"));
+
   if (!product) return null;
+
+  const selected = options.find((o) => o.key === selectedKey) || options[0];
+  const measurement = selected?.measurement || "";
+  const packageLabel = selected?.packageLabel || null;
+  const measurementLabel = selected?.label || "";
+  const currentPrice = selected?.price ?? product.price;
+  const currentOriginalPrice = selected?.originalPrice || null;
+  const currentImage = selected?.image || product.image;
+  const currentDiscount = selected?.discountPercent ?? (selected?.isBase ? product.discountPercent : null);
+  const optionOutOfStock = selected ? !selected.inStock : product.inStock === false;
+  const optionStock = selected?.stockQuantity;
 
   return (
     <div className="fixed inset-0 bg-brand-espresso/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 md:p-6 overflow-y-auto animate-fade-in">
@@ -30,15 +47,15 @@ export default function ProductModal({ product, onClose, onAddToCart }) {
         {/* Left Side: Product Image & Origin badge */}
         <div className="w-full md:w-1/2 bg-brand-card relative p-8 flex items-center justify-center min-h-[300px] md:min-h-full border-b md:border-b-0 md:border-r border-brand-border">
           {/* Sale/Discount Badge */}
-          {product.discountPercent && (
+          {currentDiscount && (
             <span className="absolute top-4 left-4 bg-brand-rose text-brand-cream text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full shadow-sm">
-              -{product.discountPercent}% Off
+              -{currentDiscount}% Off
             </span>
           )}
           
           <div className="relative w-64 h-64 md:w-80 md:h-80">
             <Image
-              src={product.image}
+              src={currentImage}
               alt={product.name}
               fill
               className="object-contain"
@@ -65,9 +82,7 @@ export default function ProductModal({ product, onClose, onAddToCart }) {
                 {product.brand}
               </span>
               {product.badge && (
-                <span className="bg-brand-espresso text-brand-cream text-[9px] font-extrabold uppercase px-2 py-0.5 rounded tracking-wider">
-                  {product.badge}
-                </span>
+                <ProductBadge text={product.badge} color={product.badgeColor} />
               )}
             </div>
 
@@ -128,35 +143,116 @@ export default function ProductModal({ product, onClose, onAddToCart }) {
                 {product.climateBenefit || "Specifically selected for Sri Lanka's tropical climate. Lightweight formulation that absorbs rapidly without clogging pores under warm, humid conditions."}
               </p>
             </div>
+
+            {/* Variant selector */}
+            {hasChoices && (
+              <div className="mb-6">
+                <h4 className="text-xs font-bold uppercase tracking-widest text-brand-rose mb-3 flex items-center gap-1.5">
+                  📏 Choose Size / Option
+                </h4>
+                <div className="flex flex-wrap gap-2.5">
+                  {options.map((opt) => {
+                    const isActive = opt.key === selectedKey;
+                    const soldOut = !opt.inStock;
+                    return (
+                      <button
+                        key={opt.key}
+                        type="button"
+                        disabled={soldOut}
+                        onClick={() => setSelectedKey(opt.key)}
+                        className={`text-left px-3.5 py-2.5 rounded-xl border transition-all duration-300 min-w-[104px] active:scale-95 ${
+                          soldOut
+                            ? "border-brand-border/50 bg-brand-card text-brand-espresso/30 cursor-not-allowed line-through"
+                            : isActive
+                            ? "bg-brand-espresso text-brand-cream border-brand-espresso shadow-sm cursor-pointer"
+                            : "bg-brand-card text-brand-espresso/75 border-brand-border/60 hover:border-brand-rose/25 hover:text-brand-rose cursor-pointer"
+                        }`}
+                      >
+                        <span className="block text-sm font-bold leading-tight">{opt.label}</span>
+                        <span className={`block text-[11px] mt-1 leading-none ${isActive ? "text-brand-cream/80" : "text-brand-espresso/50"}`}>
+                          {soldOut ? "Sold out" : `LKR ${opt.price.toLocaleString()}`}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* Size / Measurement (single-option products) */}
+            {!hasChoices && (measurement || packageLabel) && (
+              <div className="mb-6">
+                <h4 className="text-xs font-bold uppercase tracking-widest text-brand-rose mb-3 flex items-center gap-1.5">
+                  📏 Size &amp; Packaging
+                </h4>
+                <div className="flex flex-wrap gap-2.5">
+                  {measurement && (
+                    <div className="text-center px-4 py-2.5 rounded-xl border border-brand-espresso bg-brand-espresso text-brand-cream shadow-sm">
+                      <span className="block text-sm font-bold leading-none">{measurement}</span>
+                      <span className="block text-[9px] font-normal opacity-75 mt-1 leading-none uppercase tracking-wider">
+                        Net content
+                      </span>
+                    </div>
+                  )}
+                  {packageLabel && (
+                    <div className="text-center px-4 py-2.5 rounded-xl border border-brand-border/60 bg-brand-card text-brand-espresso/80">
+                      <span className="block text-sm font-bold leading-none">{packageLabel}</span>
+                      <span className="block text-[9px] font-normal opacity-75 mt-1 leading-none uppercase tracking-wider">
+                        Packaging
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Bottom Pricing & Checkout trigger */}
           <div className="pt-4 border-t border-brand-border/60 flex items-center justify-between gap-4 mt-auto">
             <div>
               <span className="block text-[10px] uppercase font-bold text-brand-espresso/45 leading-none">
-                Price
+                Price{measurement ? ` (${measurement})` : ""}
               </span>
               <div className="flex items-baseline gap-2 mt-1">
                 <span className="text-xl md:text-2xl font-bold text-brand-rose">
-                  LKR {product.price.toLocaleString()}
+                  LKR {currentPrice.toLocaleString()}
                 </span>
-                {product.originalPrice && (
+                {currentOriginalPrice && (
                   <span className="text-xs text-brand-espresso/40 line-through">
-                    LKR {product.originalPrice.toLocaleString()}
+                    LKR {currentOriginalPrice.toLocaleString()}
                   </span>
                 )}
               </div>
+              {product.showStock && optionStock != null && !optionOutOfStock && (
+                <span className={`block text-[10px] font-bold mt-1 ${optionStock <= 10 ? "text-brand-rose" : "text-brand-espresso/55"}`}>
+                  {optionStock <= 10 ? `Only ${optionStock} left` : `${optionStock} in stock`}
+                </span>
+              )}
             </div>
 
             <button
+              disabled={optionOutOfStock}
               onClick={() => {
-                onAddToCart(product);
+                if (optionOutOfStock) return;
+                onAddToCart({
+                  ...product,
+                  selectedSize: measurementLabel,
+                  selectedOptionKey: selected?.key,
+                  selectedVariantId: selected?.variantId ?? null,
+                  price: currentPrice,
+                  originalPrice: currentOriginalPrice,
+                  image: currentImage,
+                });
                 onClose();
               }}
-              className="flex-grow bg-brand-rose hover:bg-brand-rose-hover text-brand-cream font-semibold text-sm py-3 px-5 rounded-full flex items-center justify-center gap-2 transition-all shadow hover:shadow-md active:scale-98"
+              className={`flex-grow font-semibold text-sm py-3.5 px-5 rounded-full flex items-center justify-center gap-2 transition-all shadow active:scale-98 ${
+                optionOutOfStock
+                  ? "bg-brand-espresso/20 text-brand-cream/70 cursor-not-allowed"
+                  : "bg-brand-rose hover:bg-brand-rose-hover text-brand-cream hover:shadow-md"
+              }`}
             >
               <ShoppingBag className="w-4 h-4" />
-              Add to Cart
+              {optionOutOfStock ? "Sold Out" : "Add to Cart"}
             </button>
           </div>
         </div>

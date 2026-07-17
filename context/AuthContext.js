@@ -23,43 +23,68 @@ export function AuthProvider({ children }) {
     setIsLoaded(true);
   }, []);
 
+  // Persist the session (user + JWT) returned by the backend.
+  const persistSession = ({ user: authedUser, token }) => {
+    setUser(authedUser);
+    localStorage.setItem("maple_kiwi_user", JSON.stringify(authedUser));
+    if (token) localStorage.setItem("maple_kiwi_token", token);
+  };
+
+  const updateUser = (partial) => {
+    setUser((prev) => {
+      if (!prev) return prev;
+      const next = { ...prev, ...partial };
+      localStorage.setItem("maple_kiwi_user", JSON.stringify(next));
+      return next;
+    });
+  };
+
   const login = async (email, password) => {
-    // Simulated API latency
-    await new Promise((resolve) => setTimeout(resolve, 1200));
-    
-    // Create a mock user object based on email
-    const username = email.split("@")[0];
-    const capitalizedName = username.charAt(0).toUpperCase() + username.slice(1);
-    
-    const mockUser = {
-      name: capitalizedName,
-      email: email,
-    };
-    
-    setUser(mockUser);
-    localStorage.setItem("maple_kiwi_user", JSON.stringify(mockUser));
-    setIsOpen(false);
-    return mockUser;
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data.error || "Unable to sign in");
+    }
+    persistSession(data);
+    return data.user;
   };
 
-  const signup = async (name, email, password) => {
-    // Simulated API latency
-    await new Promise((resolve) => setTimeout(resolve, 1200));
-    
-    const mockUser = {
-      name: name,
-      email: email,
-    };
-    
-    setUser(mockUser);
-    localStorage.setItem("maple_kiwi_user", JSON.stringify(mockUser));
-    setIsOpen(false);
-    return mockUser;
+  const sendSignupOtp = async (name, email, password) => {
+    const res = await fetch("/api/auth/send-otp", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, password }),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data.error || "Unable to send verification code");
+    }
+    return data;
   };
 
+  const verifySignupOtp = async (email, otp) => {
+    const res = await fetch("/api/auth/verify-otp", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, otp }),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data.error || "Unable to verify code");
+    }
+    persistSession(data);
+    return data.user;
+  };
+
+  // Keep each user's basket in localStorage so it restores on the next login.
   const logout = () => {
     setUser(null);
     localStorage.removeItem("maple_kiwi_user");
+    localStorage.removeItem("maple_kiwi_token");
   };
 
   const openAuth = (initialView = "signin") => {
@@ -78,9 +103,12 @@ export function AuthProvider({ children }) {
         isOpen,
         view,
         setView,
+        isLoaded,
         login,
-        signup,
+        sendSignupOtp,
+        verifySignupOtp,
         logout,
+        updateUser,
         openAuth,
         closeAuth,
       }}
