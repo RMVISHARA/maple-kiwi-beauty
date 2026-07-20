@@ -147,9 +147,6 @@ function HomeContent() {
                 <p className="text-xs lg:text-sm text-[#FAF7F2]/70 leading-relaxed">
                   Our Canadian catalog features dermatologist-approved formulations, concentrated clinical active serums, and barrier-protecting moisturizers. Sourced directly from official suppliers in Toronto and Vancouver, we guarantee fresh batches with full ingredient transparency.
                 </p>
-                <div className="mt-6 flex items-center gap-2 text-xs font-semibold text-brand-rose group-hover:underline cursor-pointer">
-                  Shop Canada Collection <span>→</span>
-                </div>
               </div>
 
               {/* New Zealand Card */}
@@ -168,9 +165,6 @@ function HomeContent() {
                 <p className="text-xs lg:text-sm text-[#FAF7F2]/70 leading-relaxed">
                   Imported from the clean, remote ecosystems of New Zealand, these formulations leverage bioactive native plants, premium manuka honey extracts, and certified organic botanicals. Perfect for soothing and repairing skin stressed by heat and sun.
                 </p>
-                <div className="mt-6 flex items-center gap-2 text-xs font-semibold text-brand-rose group-hover:underline cursor-pointer">
-                  NZ Collection Coming Soon <span>→</span>
-                </div>
               </div>
             </div>
           </div>

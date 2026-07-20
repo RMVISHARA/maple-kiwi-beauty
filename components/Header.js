@@ -93,14 +93,14 @@ export default function Header({ searchQuery, setSearchQuery }) {
         </div>
         
         {/* Desktop Announcement View */}
-        <div className="hidden md:flex justify-center items-center gap-12 max-w-7xl mx-auto font-medium">
-          <div className="flex items-center gap-1.5">
+        <div className="hidden md:grid grid-cols-3 items-center max-w-7xl mx-auto font-medium">
+          <div className="flex items-center gap-1.5 justify-self-start">
             <span>🚚</span> Free Shipping Island-wide over Rs. 15,000.
           </div>
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-1.5 justify-self-center">
             <span>🍁</span> Authentic Canada & NZ imports
           </div>
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-1.5 justify-self-end">
             <span>📦</span> Delivered Island-wide
           </div>
         </div>

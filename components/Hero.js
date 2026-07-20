@@ -1,10 +1,29 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import HeroReviewCarousel from "@/components/HeroReviewCarousel";
 
+const HERO_BACKGROUNDS = [
+  "/images/hero_bg.png",
+  "/images/hero_bg_natural_pure_you_2.png",
+];
+
+const BACKGROUND_ROTATE_MS = 5000;
+
 export default function Hero() {
+  const [activeBackground, setActiveBackground] = useState(0);
+
+  useEffect(() => {
+    if (HERO_BACKGROUNDS.length <= 1) return;
+
+    const timer = setInterval(() => {
+      setActiveBackground((current) => (current + 1) % HERO_BACKGROUNDS.length);
+    }, BACKGROUND_ROTATE_MS);
+
+    return () => clearInterval(timer);
+  }, []);
+
   const handleScrollToProducts = (e) => {
     e.preventDefault();
     const productsSection = document.getElementById("all-products");
@@ -21,14 +40,27 @@ export default function Hero() {
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
 
   return (
-    <section className="relative w-full h-[600px] md:h-[650px] flex items-center justify-start overflow-hidden bg-[#2B2421] dark:bg-[#1C1613]">
-      {/* Background Image with Dark Tint Overlay */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-10000 hover:scale-105"
-        style={{ 
-          backgroundImage: `linear-gradient(to right, rgba(43, 36, 33, 0.9) 20%, rgba(43, 36, 33, 0.75) 50%, rgba(43, 36, 33, 0.4) 100%), url('/images/hero_bg.png')` 
-        }}
-      />
+    <section className="group relative w-full h-[600px] md:h-[650px] flex items-center justify-start overflow-hidden bg-[#2B2421] dark:bg-[#1C1613]">
+      {/* Auto-rotating background images with dark tint overlay */}
+      <div className="absolute inset-0 overflow-hidden">
+        {HERO_BACKGROUNDS.map((background, index) => (
+          <div
+            key={background}
+            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+              index === activeBackground ? "opacity-100" : "opacity-0"
+            }`}
+            aria-hidden={index !== activeBackground}
+          >
+            {/* Same slow hover zoom as the original single-photo hero */}
+            <div
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-10000 group-hover:scale-105"
+              style={{
+                backgroundImage: `linear-gradient(to right, rgba(43, 36, 33, 0.9) 20%, rgba(43, 36, 33, 0.75) 50%, rgba(43, 36, 33, 0.4) 100%), url('${background}')`,
+              }}
+            />
+          </div>
+        ))}
+      </div>
 
       {/* Floating dust/particles or glow effect for rich aesthetics */}
       <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-brand-rose/10 rounded-full blur-3xl pointer-events-none" />
