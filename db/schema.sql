@@ -81,6 +81,18 @@ CREATE TABLE IF NOT EXISTS product_variants (
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 );
 
+-- 2c. Additional Product Images (gallery images per product)
+CREATE TABLE IF NOT EXISTS product_images (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    product_id INT NOT NULL,
+    image VARCHAR(255) DEFAULT '',
+    image_data MEDIUMBLOB DEFAULT NULL,
+    image_mime_type VARCHAR(50) DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
+    INDEX idx_product_images_product (product_id)
+);
+
 -- 3. Create Users Table (for authentication)
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
