@@ -407,14 +407,14 @@ export default function ProductGrid({
         </div>
       </div>
 
-      {/* Category Selection Tabs (Horizontal scrolling on mobile) */}
-      <div className="w-full overflow-x-auto no-scrollbar mb-8 -mx-4 px-4 md:mx-0 md:px-0">
-        <div className="flex items-center gap-2 pb-1.5 md:pb-0 min-w-max">
+      {/* Category Selection Tabs (Flex-wrap to cleanly display all categories without clipping) */}
+      <div className="w-full mb-8">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
           {categories.map((category) => (
             <button
               key={category}
               onClick={() => setSelectedCategory(category)}
-              className={`text-xs font-semibold py-2 px-5 rounded-full border transition-all duration-300 ${
+              className={`text-xs font-semibold py-2 px-4 sm:px-5 rounded-full border transition-all duration-300 ${
                 selectedCategory === category
                   ? "bg-brand-espresso text-brand-cream border-brand-espresso shadow-sm"
                   : "bg-brand-card text-brand-espresso/75 border-brand-border/60 hover:border-brand-rose/25 hover:text-brand-rose"
