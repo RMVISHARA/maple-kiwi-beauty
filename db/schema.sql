@@ -187,8 +187,8 @@ CREATE TABLE IF NOT EXISTS review_photos (
 -- ==========================================
 
 -- Clear existing seed rows so this script can be re-run safely.
-DELETE FROM product_benefits WHERE product_id IN (1, 2, 3, 4, 5);
-DELETE FROM products WHERE id IN (1, 2, 3, 4, 5);
+DELETE FROM product_benefits WHERE product_id IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+DELETE FROM products WHERE id IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 
 INSERT IGNORE INTO categories (id, name, sort_order) VALUES
 (1, 'Anti Aging', 1),
@@ -203,7 +203,12 @@ INSERT INTO products (id, name, brand, origin, category, badge, badge_color, dis
 (2, 'Ascorbyl Glucoside Solution 12%', 'THE ORDINARY', 'CANADA', 'Brightening', 'SALE', '#c4726e', 15, 'Brightening - Pigmentation & uneven skin tone', 876, 3900, 4600, 30, 'ml', 'dropper', '/images/products/vit_c.png', 'People with pigmentation and uneven skin tone.', 'A water-soluble Vitamin C derivative that is incredibly stable and lightweight. Ideal for brightening and UV antioxidant protection in tropical sunshine without leaving an oily residue.'),
 (3, 'Niacinamide 10% + Zinc 1%', 'THE ORDINARY', 'CANADA', 'Acne & Oil Control', 'TOP RATED', '#8A9A86', NULL, 'Acne & Oil Control - Oily and combination skin types', 2103, 3500, NULL, 30, 'ml', 'dropper', '/images/products/niacinamide.png', 'Oily and combination skin types.', 'An absolute essential for Sri Lanka\'s climate. Niacinamide regulates sebum production while Zinc calms inflammation, preventing breakouts caused by sweat and humidity.'),
 (4, 'Hyaluronic Acid 2% + B5', 'THE ORDINARY', 'CANADA', 'Hydration', 'CLIMATE PICK', '#4B6F44', 16, 'Hydration - Men and women of all ages', 1654, 4200, 5000, 30, 'ml', 'dropper', '/images/products/hyaluronic.png', 'Men and women of all ages.', 'Provides deep hydration by binding water to the skin without using heavy emollients. Absorbs instantly and leaves skin feeling plump, fresh, and cooled in warm climates.'),
-(5, 'Protect + Hydrate SPF 50 Sunscreen', 'AVEENO', 'CANADA', 'Sun Protection', 'ESSENTIAL', '#8FBC8F', 17, 'Sun Protection - Everyone using skincare products', 934, 6500, 7800, 88, 'ml', 'tube', '/images/products/sunscreen.png', 'Everyone using skincare products.', 'Broad-spectrum SPF 50 protection infused with prebiotic oat to soothe skin. Sweat and water-resistant, making it perfect for Sri Lanka\'s warm outdoors and tropical beaches.');
+(5, 'Protect + Hydrate SPF 50 Sunscreen', 'AVEENO', 'CANADA', 'Sun Protection', 'ESSENTIAL', '#8FBC8F', 17, 'Sun Protection - Everyone using skincare products', 934, 6500, 7800, 88, 'ml', 'tube', '/images/products/sunscreen.png', 'Everyone using skincare products.', 'Broad-spectrum SPF 50 protection infused with prebiotic oat to soothe skin. Sweat and water-resistant, making it perfect for Sri Lanka\'s warm outdoors and tropical beaches.'),
+(6, 'Certified Organic Rosehip Oil', 'TRILOGY', 'NEW ZEALAND', 'Hydration', 'ORGANIC', '#8FBC8F', 15, 'Hydration - Pure organic cold-pressed rosehip oil', 412, 5800, 6800, 45, 'ml', 'bottle', '/images/products/rosehip_oil.png', 'Dry, dehydrated, and aging skin types.', 'Certified organic cold-pressed rosehip oil that delivers intense hydration and nourishment to dry skin. Extremely lightweight and fast-absorbing, perfect for locking in moisture in tropical settings.'),
+(7, 'Aura Manuka Honey Treatment Mask', 'ANTIPODES', 'NEW ZEALAND', 'Acne & Oil Control', 'BIOACTIVE', '#D4AF37', 15, 'Acne & Oil Control - Purifying and hydrating treatment mask', 328, 7200, 8500, 75, 'ml', 'tube', '/images/products/manuka_mask.png', 'Acne-prone, blemish-prone, and sensitive skin types.', 'Formulated with premium New Zealand manuka honey, this bioactive mask targets blemishes and calms redness. It cleanses deeply while drawing moisture into the skin, preventing dryness from tropical heat.'),
+(8, 'Rotorua Mud Face Pack with Royal Jelly', 'WILD FERNS', 'NEW ZEALAND', 'Brightening', 'DETOX', '#B95C65', 15, 'Brightening - Detoxifying and pore-refining facial pack', 186, 4900, 5800, 95, 'g', 'jar', '/images/products/rotorua_mud.png', 'Oily, dull, and congested skin types.', 'Made with mineral-rich thermal mud from Rotorua, New Zealand, this mask detoxifies the skin and refines pores. It absorbs excess sebum and removes dead skin cells, restoring a bright, glowing complexion.'),
+(9, 'Avocado Pear Nourishing Night Cream', 'ANTIPODES', 'NEW ZEALAND', 'Anti Aging', 'COLLAGEN BOOST', '#4B6F44', 15, 'Anti Aging - Collagen-boosting nourishing night cream', 254, 6900, 8200, 60, 'ml', 'jar', '/images/products/avocado_cream.png', 'Dry, mature, and aging skin types.', 'Infused with nutrient-rich New Zealand avocado pear oil and bioactive extract, this night cream naturally stimulates collagen production. It restores skin elasticity overnight without clogging pores in humid weather.'),
+(10, 'Manuka Honey Protective SPF 30 Sunscreen', 'WILD FERNS', 'NEW ZEALAND', 'Sun Protection', 'PROTECTIVE', '#8A9A86', 15, 'Sun Protection - Daily sun protective lotion with Manuka Honey', 198, 5500, 6500, 75, 'ml', 'tube', '/images/products/manuka_sunscreen.png', 'All skin types needing daily UV protection.', 'Formulated with New Zealand active manuka honey, this daily sunscreen offers broad-spectrum SPF 30 protection while soothing and repairing sun-stressed skin. Lightweight and non-greasy.');
 
 -- Seed Product Benefits Table
 INSERT INTO product_benefits (product_id, benefit) VALUES
@@ -230,7 +235,32 @@ INSERT INTO product_benefits (product_id, benefit) VALUES
 (5, 'Protects against UV damage.'),
 (5, 'Helps prevent premature aging.'),
 (5, 'Essential daily skincare product.'),
-(5, 'Suitable for tropical weather.');
+(5, 'Suitable for tropical weather.'),
+
+(6, 'Promotes skin elasticity and firmness.'),
+(6, 'Nourishes and deeply moisturizes.'),
+(6, 'Helps reduce the appearance of scars and stretch marks.'),
+(6, 'Rich in essential fatty acids and antioxidants.'),
+
+(7, 'Antibacterial manuka honey helps clear blemishes.'),
+(7, 'Calms skin inflammation and redness.'),
+(7, 'Deeply hydrates and softens.'),
+(7, 'Refreshing vanilla and mandarin scent.'),
+
+(8, 'Purifies pores and absorbs excess sebum.'),
+(8, 'Royal jelly nourishes and brightens skin.'),
+(8, 'Promotes cell regeneration and a glowing complexion.'),
+(8, 'Rich in natural volcanic minerals.'),
+
+(9, 'Boosts skin collagen production naturally.'),
+(9, 'Deeply nourishes with organic avocado oil.'),
+(9, 'Reduces fine lines and visible signs of aging.'),
+(9, 'Enriched with aromatic sandalwood and patchouli.'),
+
+(10, 'Protects against harmful UVA and UVB rays.'),
+(10, 'Active manuka honey naturally hydrates and heals.'),
+(10, 'Absorbs quickly with no greasy residue or white cast.'),
+(10, 'Sweat-resistant and perfect for daily wear in hot climates.');
 
 -- Seed a couple of extra size options (variants) for product 1 to demo the feature.
 -- Product 1's own row is the default 30 mL option; these are the larger sizes.
